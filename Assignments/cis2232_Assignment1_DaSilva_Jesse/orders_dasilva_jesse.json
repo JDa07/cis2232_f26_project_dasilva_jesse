@@ -1,0 +1,2 @@
+{"saleID":1001,"vehicleType":"Car","vehicleColour":"green","rentalTimeDays":3,"custFName":"Jesse","custLName":"D","custAddress":"123 street","saleTotal":"$120.75","rentDate":"2026-09-10","vehicleCost":35}
+{"saleID":1002,"vehicleType":"Truck","vehicleColour":"blue","rentalTimeDays":5,"custFName":"John","custLName":"Doe","custAddress":"321 road","saleTotal":"$230.00","rentDate":"2000-09-02","vehicleCost":40}

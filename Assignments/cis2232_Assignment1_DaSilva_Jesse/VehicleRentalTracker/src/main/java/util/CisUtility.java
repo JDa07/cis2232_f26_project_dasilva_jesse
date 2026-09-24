@@ -1,4 +1,4 @@
-package ca.hccis.tracker.util;
+package util;
 
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
