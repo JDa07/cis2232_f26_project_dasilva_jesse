@@ -32,7 +32,7 @@ public class Controller {
     public static final String MESSAGE_EXIT = "Goodbye";
     public static final String MESSAGE_SUCCESS = "Success";
     public static final String PATH = "C:\\Users\\jdasilva146313\\OneDrive - Holland College\\Documents\\GitHub\\cis2232_f26_project_dasilva_jesse\\Assignments\\cis2232_Assignment1_DaSilva_Jesse\\";
-    public static final String FILE_NAME = "orders_dasilva_jesse.json";
+    public static final String FILE_NAME = "data_dasilva_jesse.json";
     private static Path journalPath = null;
     private static FileWriter journalWriter = null;
 
