@@ -7,6 +7,13 @@ import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.text.NumberFormat;
 
+/**
+ *  Vehicle rental order application.
+ *
+ * @author Jesse Da Silva
+ * @since 22-09-2026
+ */
+
 public class VehicleRentalOrder {
 
     private int saleID;                     //ID used to differentiate sales
@@ -41,6 +48,12 @@ public class VehicleRentalOrder {
 /*
 * Need to add validation to user input
  */
+    /**
+     *  Gets rental information from the user.
+     *
+     * @author Jesse Da Silva
+     * @since 24-09-2026
+     */
     public boolean getInformation(){
 
         custFName = CisUtility.getInputString("First name: ");
@@ -92,7 +105,13 @@ public class VehicleRentalOrder {
         return true;
     }
 
-    //Method to validate if user input has blank fields. Will not save to JSON file if so.
+    /**
+     *  Method to validate if user input has blank fields. Will not save to JSON file if so.
+     *
+     * @author Jesse Da Silva
+     * @since 24-09-2026
+     */
+
     public boolean isComplete() {
         return notBlank(custFName) && notBlank(custLName) && notBlank(custAddress)
                 && notBlank(rentDate) && notBlank(vehicleType) && notBlank(vehicleColour)
@@ -103,7 +122,13 @@ public class VehicleRentalOrder {
         return s != null && !s.isBlank();
     }
 
-    // Method to calculate sale total
+    /**
+     * Method to calculate sale total
+     *
+     * @author Jesse Da Silva
+     * @since 24-09-2026
+     */
+
     public String calculateTotal(){
         NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.CANADA);
         BigDecimal total = BigDecimal.valueOf(vehicleCost)
@@ -114,17 +139,22 @@ public class VehicleRentalOrder {
         return saleTotal;
     }
 
-    //Constructor for saleID
+    //Constructor for saleID//
     public VehicleRentalOrder(){
         this.saleID = generateID();
     }
 
-    //Method to generate an order ID
+    //Method to generate an order ID//
     public static int generateID(){
         return COUNTER.incrementAndGet();
     }
 
-    //Method to write data into Json file
+    /**
+     * Method to write data into Json file
+     *
+     * @author Jesse Da Silva
+     * @since 24-09-2026
+     */
     public String toJson() {
         Gson gson = new Gson();
         String json = gson.toJson(this);
