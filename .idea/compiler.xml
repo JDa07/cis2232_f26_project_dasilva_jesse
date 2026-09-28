@@ -7,7 +7,13 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="cis1232_A1_DaSilva_Jesse" />
+        <module name="vehicle_rental_tracker" />
       </profile>
     </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="vehicle_rental_tracker" options="-parameters" />
+    </option>
   </component>
 </project>
