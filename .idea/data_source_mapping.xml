@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourcePerFileMappings">
-    <file url="file://$PROJECT_DIR$/Project/vehicle_rental_tracker/src/main/resources/db/mysql/createDatabase1.sql" value="09598665-9f3d-4e0c-9b42-5467b7156e96" />
+    <file url="file://$PROJECT_DIR$/Project/Vehicle_Rental_Tracker/src/main/resources/db/mysql/createDatabase1.sql" value="09598665-9f3d-4e0c-9b42-5467b7156e96" />
   </component>
 </project>

@@ -1,4 +1,4 @@
-package ca.hccis.squash.bo;
+package ca.hccis.tracker.bo;
 
 import ca.hccis.squash.dao.SkillsAssessmentSquashTechnicalDAO;
 import ca.hccis.squash.jpa.entity.SkillsAssessmentSquashTechnical;
