@@ -18,7 +18,7 @@ CREATE TABLE VehicleRentalTrackerData
     custAddress       varchar(50) NOT NULL COMMENT 'Customer address',
     vehicleColour     varchar(50) NOT NULL COMMENT 'Vehicle colour',
     vehicleType      varchar(50) NOT NULL COMMENT 'Vehicle type',
-    rentalTimeDays  int(5) COMMENT 'Vehicle rental length in days',
+    rentalTimeDays  int COMMENT 'Vehicle rental length in days',
     saleTotal       double COMMENT 'Sale total'
 
 ) COMMENT 'This table holds vehicle rental details';
