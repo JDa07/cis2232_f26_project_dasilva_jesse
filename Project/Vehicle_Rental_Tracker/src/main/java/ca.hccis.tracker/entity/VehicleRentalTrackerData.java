@@ -11,10 +11,12 @@ import java.util.Objects;
 
 public class VehicleRentalTrackerData {
 
+
     public VehicleRentalTrackerData() {
         this.rentalTimeDays = 0;
         this.saleTotal = 0;
     }
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +33,7 @@ public class VehicleRentalTrackerData {
     @Column(name = "custFName", nullable = false, length = 50)
     private String custFName;
 
-    @Size(min = 1, max = 10)
+    @Size(min = 1, max = 50)
     @NotNull
     @Column(name = "custLName", nullable = false, length = 50)
     private String custLName;
@@ -57,39 +59,84 @@ public class VehicleRentalTrackerData {
     @Column(name = "saleTotal")
     private double saleTotal;
 
-                    //GETTERS AND SETTERS//
+    //GETTERS AND SETTERS//
 
-    public Integer getSaleID() {return saleID;}
-    public void setSaleID(Integer saleID) {this.saleID = saleID;}
+    public Integer getSaleID() {
+        return saleID;
+    }
 
-    public String getRentDate() {return rentDate;}
-    public void setRentDate(String rentDate) {this.rentDate = rentDate;}
+    public void setSaleID(Integer saleID) {
+        this.saleID = saleID;
+    }
 
-    public String getCustFName() {return custFName;}
-    public void setCustFName(String custFName) {this.custFName = custFName;}
+    public String getRentDate() {
+        return rentDate;
+    }
 
-    public String getCustLName() {return custLName;}
-    public void setCustLName(String custLName) {this.custLName = custLName;}
+    public void setRentDate(String rentDate) {
+        this.rentDate = rentDate;
+    }
 
-    public String getCustAddress() {return custAddress;}
-    public void setCustAddress(String custAddress) {this.custAddress = custAddress;}
+    public String getCustFName() {
+        return custFName;
+    }
 
-    public String getVehicleColour() {return vehicleColour;}
-    public void setVehicleColour(String vehicleColour) {this.vehicleColour = vehicleColour;}
+    public void setCustFName(String custFName) {
+        this.custFName = custFName;
+    }
 
-    public String getVehicleType() {return vehicleType;}
-    public void setVehicleType(String vehicleType) {this.vehicleType = vehicleType;}
+    public String getCustLName() {
+        return custLName;
+    }
 
-    public int getRentalTimeDays() {return rentalTimeDays;}
-    public void setRentalTimeDays(int rentalTimeDays) {this.rentalTimeDays = rentalTimeDays;}
+    public void setCustLName(String custLName) {
+        this.custLName = custLName;
+    }
 
-    public double getSaleTotal() {return saleTotal;}
-    public void setSaleTotal(double saleTotal) {this.saleTotal = saleTotal;}
+    public String getCustAddress() {
+        return custAddress;
+    }
+
+    public void setCustAddress(String custAddress) {
+        this.custAddress = custAddress;
+    }
+
+    public String getVehicleColour() {
+        return vehicleColour;
+    }
+
+    public void setVehicleColour(String vehicleColour) {
+        this.vehicleColour = vehicleColour;
+    }
+
+    public String getVehicleType() {
+        return vehicleType;
+    }
+
+    public void setVehicleType(String vehicleType) {
+        this.vehicleType = vehicleType;
+    }
+
+    public int getRentalTimeDays() {
+        return rentalTimeDays;
+    }
+
+    public void setRentalTimeDays(int rentalTimeDays) {
+        this.rentalTimeDays = rentalTimeDays;
+    }
+
+    public double getSaleTotal() {
+        return saleTotal;
+    }
+
+    public void setSaleTotal(double saleTotal) {
+        this.saleTotal = saleTotal;
+    }
 
     @Override
-    public String toString(){
+    public String toString() {
         return "VehicleRentalTracker\n" +
-                "rentDate = " + rentDate +"\n" +
+                "rentDate = " + rentDate + "\n" +
                 "custFName = " + custFName + "\n" +
                 "custLName = " + custLName + "\n" +
                 "custAddress = " + custAddress + "\n" +
@@ -107,5 +154,7 @@ public class VehicleRentalTrackerData {
     }
 
     @Override
-    public int hashCode() {return Objects.hashCode(getSaleID());}
+    public int hashCode() {
+        return Objects.hashCode(getSaleID());
+    }
 }
