@@ -1,8 +1,8 @@
 package ca.hccis.tracker;
 
 import com.google.gson.Gson;
-import util.CisUtility;
-import entity.VehicleRentalOrder;
+import ca.hccis.tracker.util.CisUtility;
+import ca.hccis.tracker.entity.VehicleRentalOrder;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -31,7 +31,7 @@ public class Controller {
     public static final String MESSAGE_ERROR = "Error";
     public static final String MESSAGE_EXIT = "Goodbye";
     public static final String MESSAGE_SUCCESS = "Success";
-    public static final String PATH = "C:\\CIS2232\\";
+    public static final String PATH = "c:\\CIS2232\\";
     public static final String FILE_NAME = "data_dasilva_jesse.json";
     private static Path journalPath = null;
     private static FileWriter journalWriter = null;
