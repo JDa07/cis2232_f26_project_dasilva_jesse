@@ -1,6 +1,10 @@
 package ca.hccis.tracker.bo;
 
+import ca.hccis.tracker.dao.VehicleRentalTrackerDAO;
 import ca.hccis.tracker.entity.VehicleRentalTrackerData;
+import ca.hccis.tracker.util.CisUtilityFile;
+
+import java.util.ArrayList;
 
 public class VehicleRentalTrackerBO {
     //CONSTANTS//
@@ -37,5 +41,17 @@ public class VehicleRentalTrackerBO {
         double total = (costOfVehicle * data.getRentalTimeDays()) * TAX_RATE;
         data.setSaleTotal(total);
         return total;
+    }
+
+    public ArrayList<VehicleRentalTrackerData> processSelectAllByCustomerName (String name) {
+
+        VehicleRentalTrackerData vehicleRentalTrackerData = new VehicleRentalTrackerData();
+
+        VehicleRentalTrackerDAO vehicleRentalTrackerDAO = new VehicleRentalTrackerDAO();
+        ArrayList<VehicleRentalTrackerData> rentals = vehicleRentalTrackerDAO.selectAllByCustomerName(name); //Method needs to be created
+
+        //Write report to file
+        CisUtilityFile.writeReportToFile("customerNameReport", rentals);
+        return rentals;
     }
 }

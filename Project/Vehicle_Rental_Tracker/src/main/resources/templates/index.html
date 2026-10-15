@@ -13,7 +13,7 @@
 </div>
 
 <script th:inline="javascript">
-    const assessmentData = [[${assessments}]]; //Note possible syntax warning issue but functions correctly.
+    const assessmentData = [[$,{assessments}]]; //Note possible syntax warning issue but functions correctly.
     console.log('Assessment Data:', assessmentData);
 
     const athleteNames = assessmentData.map(item => item.athleteName);
