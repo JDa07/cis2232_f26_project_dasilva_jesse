@@ -1,6 +1,6 @@
-package entity;
+package ca.hccis.tracker.entity;
 import com.google.gson.Gson;
-import util.CisUtility;
+import ca.hccis.tracker.util.CisUtility;
 
 import java.math.BigDecimal;
 import java.util.Locale;

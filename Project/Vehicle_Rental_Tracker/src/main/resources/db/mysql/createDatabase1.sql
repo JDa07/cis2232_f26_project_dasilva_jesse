@@ -26,7 +26,7 @@ CREATE TABLE VehicleRentalTrackerData
 ALTER TABLE VehicleRentalTrackerData
     ADD PRIMARY KEY (saleID);
 ALTER TABLE VehicleRentalTrackerData
-    MODIFY saleID int(4) NOT NULL AUTO_INCREMENT COMMENT 'This is the primary key',
+    MODIFY saleID int NOT NULL AUTO_INCREMENT COMMENT 'This is the primary key',
     AUTO_INCREMENT = 1;
 
 CREATE TABLE CodeType (codeTypeId int(3) COMMENT 'This is the primary key for code types',
@@ -44,7 +44,7 @@ ALTER TABLE CodeType
 INSERT INTO CodeType (CodeTypeId, englishDescription, frenchDescription, createdDateTime, createdUserId, updatedDateTime, updatedUserId) VALUES
     (1, 'User Types', 'User Types FR', sysdate(), '', CURRENT_TIMESTAMP, '');
 INSERT INTO CodeType (CodeTypeId, englishDescription, frenchDescription, createdDateTime, createdUserId, updatedDateTime, updatedUserId) VALUES
-    (2, 'Squash Technical Types', 'Squash Technical Types FR', sysdate(), '', CURRENT_TIMESTAMP, '');
+    (2, 'Vehicle Rental Types', 'Vehicle Rental Types FR', sysdate(), '', CURRENT_TIMESTAMP, '');
 
 
 

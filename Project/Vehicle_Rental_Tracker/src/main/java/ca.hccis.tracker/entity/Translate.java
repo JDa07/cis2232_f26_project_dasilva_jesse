@@ -1,4 +1,4 @@
-package ca.hccis.squash.entity;
+package ca.hccis.tracker.entity;
 
 /**
  * Entity class to hold the attributes of the bus pass related reports.

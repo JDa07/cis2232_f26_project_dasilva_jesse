@@ -1,4 +1,4 @@
-package ca.hccis.squash.rest;
+package ca.hccis.tracker.rest;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

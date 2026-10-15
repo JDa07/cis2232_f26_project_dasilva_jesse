@@ -1,4 +1,4 @@
-package ca.hccis.squash.jpa.entity;
+package ca.hccis.tracker.entity;
 
 import org.hibernate.Hibernate;
 

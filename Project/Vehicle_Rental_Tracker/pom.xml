@@ -27,8 +27,7 @@
     <!-- Compilation and Environment Properties                              -->
     <!-- =================================================================== -->
     <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <java.version>21</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -60,6 +59,7 @@
             <optional>true</optional>
         </dependency>
 
+
         <!-- Database Connectors -->
         <!-- <dependency>-->
         <!--     <groupId>mysql</groupId>-->
@@ -83,6 +83,11 @@
                     <artifactId>junit-vintage-engine</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
         <!-- JSON Processing Utilities -->

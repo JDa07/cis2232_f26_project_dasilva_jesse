@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Size;
 import java.util.Objects;
 
 @Entity
-@Table(name = "VehicleRentalTrackerData")
+@Table(name = "vehiclerentaltrackerdata")
 
 public class VehicleRentalTrackerData {
 
@@ -45,7 +45,7 @@ public class VehicleRentalTrackerData {
 
     @Size(min = 1, max = 50)
     @NotNull
-    @Column(name = "vehicleColour", nullable = false, length = 20)
+    @Column(name = "vehicleColour", nullable = false, length = 50)
     private String vehicleColour;
 
     @Size(min = 1, max = 50)
