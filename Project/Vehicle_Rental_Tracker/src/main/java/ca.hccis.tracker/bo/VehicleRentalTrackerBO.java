@@ -48,7 +48,7 @@ public class VehicleRentalTrackerBO {
         VehicleRentalTrackerData vehicleRentalTrackerData = new VehicleRentalTrackerData();
 
         VehicleRentalTrackerDAO vehicleRentalTrackerDAO = new VehicleRentalTrackerDAO();
-        ArrayList<VehicleRentalTrackerData> rentals = vehicleRentalTrackerDAO.selectAllByCustomerName(name); //Method needs to be created
+        ArrayList<VehicleRentalTrackerData> rentals = vehicleRentalTrackerDAO.selectAllByCustomerName(name);
 
         //Write report to file
         CisUtilityFile.writeReportToFile("customerNameReport", rentals);

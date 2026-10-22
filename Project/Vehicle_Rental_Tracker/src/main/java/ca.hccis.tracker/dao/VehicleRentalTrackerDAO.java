@@ -2,6 +2,7 @@ package ca.hccis.tracker.dao;
 
 import ca.hccis.tracker.entity.VehicleRentalTrackerData;
 
+import ca.hccis.tracker.util.CisUtilityFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,7 +52,7 @@ public class VehicleRentalTrackerDAO {
 
                 VehicleRentalTrackerData rental = new VehicleRentalTrackerData();
 
-                rental.setSaleID(rs.getInt("id"));
+                rental.setSaleID(rs.getInt("saleID"));
                 rental.setRentDate(rs.getString("rentDate"));
                 rental.setCustFName(rs.getString("custFName"));
                 rental.setCustLName(rs.getString("custLName"));
@@ -82,27 +83,32 @@ public class VehicleRentalTrackerDAO {
      * @since 15/10/2026
      */
 
-    public ArrayList<VehicleRentalTrackerData> selectAllByCustomerName(String customerName) {
+    public ArrayList<VehicleRentalTrackerData> selectAllByCustomerName(String fName, String lName) throws SQLException {
         ArrayList<VehicleRentalTrackerData> rentals = null;
-        Statement stmt = null;
+        String sql = "SELECT * FROM VehicleRentalTrackerData WHERE custFName = ? AND custLName = ?";
 
-        try{
-
-            stmt = conn.createStatement();
-            String sqlStatement = "select & from vehiclerentaltrackerdata " + "where customerName = " + customerName; // figure out where/how to get full name
-            rs = stmt.executeQuery(sqlStatement);
-
-            rentals = loadList(rs);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-
-            try{
-                stmt.close();
-            } catch (SQLException ex) {
-                System.out.println("There was an error closing");
+        try (PreparedStatement ps = conn.prepareStatement(sql)){
+            ps.setString(1, fName);
+            ps.setString(2, lName);
+            try (ResultSet results = ps.executeQuery()) {
+                rentals = loadList(results);
+            } catch (SQLException e) {
+                logger.error(e.toString());
             }
-        } return rentals;
+        }
+        return rentals;
+    }
+
+    public ArrayList<VehicleRentalTrackerData> processSelectAllByCustomerName(String fName, String lName) throws SQLException {
+
+        VehicleRentalTrackerDAO vehicleRentalTrackerDAO = new VehicleRentalTrackerDAO();
+        ArrayList<VehicleRentalTrackerData> rentals =
+                vehicleRentalTrackerDAO.selectAllByCustomerName(fName, lName);
+
+        if (rentals != null) {
+            CisUtilityFile.writeReportToFile("customerNameReport", rentals);
+        }
+        return rentals;
     }
 
     public ArrayList<VehicleRentalTrackerData> loadList(ResultSet rs) throws SQLException {
@@ -111,7 +117,7 @@ public class VehicleRentalTrackerDAO {
         while (rs.next()) {
             VehicleRentalTrackerData rental = new VehicleRentalTrackerData();
 
-            rental.setSaleID(rs.getInt("id"));
+            rental.setSaleID(rs.getInt("saleID"));
             rental.setRentDate(rs.getString("rentDate"));
             rental.setCustFName(rs.getString("custFName"));
             rental.setCustLName(rs.getString("custLName"));
