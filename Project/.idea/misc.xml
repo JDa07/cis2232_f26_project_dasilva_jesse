@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/vehicle_rental_tracker/pom.xml" />
+        <option value="$PROJECT_DIR$/clients_that_use_web_services/test_console_app_that_calls_soap2/pom.xml" />
+        <option value="$PROJECT_DIR$/clients_that_use_web_services/console_app_that_calls_generic_post/pom.xml" />
+        <option value="$PROJECT_DIR$/clients_that_use_web_services/console_application_client_which_calls_rest/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" project-jdk-name="openjdk-27" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+</project>

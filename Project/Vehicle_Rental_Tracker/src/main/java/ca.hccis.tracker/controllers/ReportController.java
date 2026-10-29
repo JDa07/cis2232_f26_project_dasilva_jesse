@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.servlet.http.HttpSession;
@@ -88,18 +89,22 @@ public class ReportController {
      * @since 15/10/2026
      */
 
-    @RequestMapping("/tracker/name/submit")
+    @PostMapping("/tracker/name/submit")
     public String reportTrackerNameSubmit(Model model, @ModelAttribute("reportInput") ReportTracker reportTracker) {
 
-        System.out.println("Name from input form: " + reportTracker.getfName() + " " + reportTracker.getlName());
+        String firstName = reportTracker.getfName() == null ? "" : reportTracker.getfName().trim();
+        String lastName = reportTracker.getlName() == null ? "" : reportTracker.getlName().trim();
+
+        logger.info("Name from input form: {} {}",  firstName, lastName);
 
         VehicleRentalTrackerBO vehicleRentalTrackerBO = new VehicleRentalTrackerBO();
-        ArrayList<VehicleRentalTrackerData> list = vehicleRentalTrackerBO.processSelectAllByCustomerName(reportTracker.getfName() + " " + reportTracker.getlName());
+        ArrayList<VehicleRentalTrackerData> list =
+                vehicleRentalTrackerBO.processSelectAllByCustomerName(firstName, lastName);
         reportTracker.setVehicleRentalTrackerData(list);
 
-        if (list != null && list.isEmpty()) {
-            model.addAttribute("message", "no rentals found under that name");
-            System.out.println("no data found");
+        if (list == null || list.isEmpty()) {
+            model.addAttribute("message", "There are no records found under that name.");
+            logger.info("No data found for {} {}", firstName, lastName);
         }
 
         model.addAttribute("reportInput", reportTracker);

@@ -43,12 +43,17 @@ public class VehicleRentalTrackerBO {
         return total;
     }
 
-    public ArrayList<VehicleRentalTrackerData> processSelectAllByCustomerName (String name) {
+    /**
+     * Get all rentals for customer and write data to file
+     * @param firstName customer first name
+     * @param lastName customer last name
+     * @return list of matching rentals
+     */
 
-        VehicleRentalTrackerData vehicleRentalTrackerData = new VehicleRentalTrackerData();
+    public ArrayList<VehicleRentalTrackerData> processSelectAllByCustomerName (String firstName, String lastName) {
 
-        VehicleRentalTrackerDAO vehicleRentalTrackerDAO = new VehicleRentalTrackerDAO();
-        ArrayList<VehicleRentalTrackerData> rentals = vehicleRentalTrackerDAO.selectAllByCustomerName(name); //Method needs to be created
+        VehicleRentalTrackerDAO dao = new VehicleRentalTrackerDAO();
+        ArrayList<VehicleRentalTrackerData> rentals = dao.selectAllByCustomerName(firstName, lastName); //Method needs to be created
 
         //Write report to file
         CisUtilityFile.writeReportToFile("customerNameReport", rentals);

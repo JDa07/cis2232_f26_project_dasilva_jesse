@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/head :: headerFragment">
+    <title id="pageTitle">Rental</title>
+</head>
+<body>
+<!--/*@thymesVar id="rental" type="ca.hccis.tracker.entity.VehicleRentalTrackerData"*/-->
+<!--/*@thymesVar id="vehicleTypes" type="java.util.List<java.lang.String>"*/-->
+<nav th:replace="fragments/navHeader :: navbar"></nav>
+
+<div class="container">
+    <h2 class="title is-2" th:text="${rental.saleID == null} ? 'Add Rental' : 'Edit Rental'">Rental</h2>
+
+    <form th:action="@{/vehiclerentaltracker/submit}" th:object="${rental}" method="post" style="max-width: 500px;">
+        <input type="hidden" th:field="*{saleID}">
+
+        <div class="field">
+            <label class="label" for="rentDate">Rental date</label>
+            <div class="control"><input class="input" type="date" id="rentDate" th:field="*{rentDate}"></div>
+            <p class="error" th:if="${#fields.hasErrors('rentDate')}" th:errors="*{rentDate}"></p>
+        </div>
+
+        <div class="field">
+            <label class="label" for="custFName">First name</label>
+            <div class="control"><input class="input" type="text" id="custFName" th:field="*{custFName}"></div>
+            <p class="error" th:if="${#fields.hasErrors('custFName')}" th:errors="*{custFName}"></p>
+        </div>
+
+        <div class="field">
+            <label class="label" for="custLName">Last name</label>
+            <div class="control"><input class="input" type="text" id="custLName" th:field="*{custLName}"></div>
+            <p class="error" th:if="${#fields.hasErrors('custLName')}" th:errors="*{custLName}"></p>
+        </div>
+
+        <div class="field">
+            <label class="label" for="custAddress">Address</label>
+            <div class="control"><input class="input" type="text" id="custAddress" th:field="*{custAddress}"></div>
+            <p class="error" th:if="${#fields.hasErrors('custAddress')}" th:errors="*{custAddress}"></p>
+        </div>
+
+        <div class="field">
+            <label class="label" for="vehicleType">Vehicle type</label>
+            <div class="select">
+                <select id="vehicleType" th:field="*{vehicleType}">
+                    <option th:each="type : ${vehicleTypes}" th:value="${type}" th:text="${type}"></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label" for="vehicleColour">Vehicle colour</label>
+            <div class="control"><input class="input" type="text" id="vehicleColour" th:field="*{vehicleColour}"></div>
+            <p class="error" th:if="${#fields.hasErrors('vehicleColour')}" th:errors="*{vehicleColour}"></p>
+        </div>
+
+        <div class="field">
+            <label class="label" for="rentalTimeDays">Rental length (days)</label>
+            <div class="control"><input class="input" type="number" min="1" id="rentalTimeDays" th:field="*{rentalTimeDays}"></div>
+            <p class="error" th:if="${#fields.hasErrors('rentalTimeDays')}" th:errors="*{rentalTimeDays}"></p>
+        </div>
+
+        <div class="field is-grouped">
+            <div class="control"><input class="button is-link" type="submit" value="Save"></div>
+            <div class="control"><a class="button is-light" th:href="@{/vehiclerentaltracker}">Cancel</a></div>
+        </div>
+    </form>
+</div>
+
+<footer th:replace="fragments/footer :: footer"></footer>
+</body>
+</html>

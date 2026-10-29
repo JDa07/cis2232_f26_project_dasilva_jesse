@@ -1,44 +1,59 @@
 <!DOCTYPE html>
-
-<!--Thanks to Ferhad, Francisco, and Carter from grad 2022 for the styling on this page.-->
-
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-    <head th:replace="fragments/head :: head">
-        <title id="pageTitle" th:text="${session.title}">Reports</title>
-    </head>
-    <body>
-        <style scoped="scoped">th,tr,td{
-                text-align:left!important
-            }
-            td{
-                padding:0!important
-            }
-            tr th{
-                line-height:1;
-                padding-bottom:8px
-            }
-            tr:nth-child(even){
-                background-color: #FFF
-            }
-            .a{
-                padding:0 32px 0 0
-            }</style>
-        <!--^This is illegal. However, th:replace doesn't allow custom styling. This CSS is needed.^-->
-        <nav th:replace="fragments/navHeader :: navbar"></nav>
-        <div class="container has-text-centered">
-            <h2 class="title is-2" style="margin-bottom:-10px!important">Reports</h2>
-            <br></br>
-            <table class="wbb centered" style="padding:0!important;display:inline-block!important">
-                <tr>
-                    <td><a th:href="@{/report/squash/name}" th:text="#{label.report.athlete.assessor.report}" >Placeholder report 1</a></td>
-                    <td></td>
-                </tr><!-- comment -->
-                <tr>
-                    <td><a th:href="@{/report/squash/score}"th:text="#{label.report.score.range}" >Placeholder report 2</a></td>
-                    <td></td>
-                </tr><!-- comment -->
-            </table>
-        </div>
-        <footer th:replace="fragments/footer :: footer"></footer>
-    </body>
+<head th:include="fragments/head :: headerFragment">
+    <title id="pageTitle">Rentals</title>
+</head>
+<body>
+<!--/*@thymesVar id="rentals" type="java.util.List<ca.hccis.tracker.entity.VehicleRentalTrackerData>"*/-->
+<nav th:replace="fragments/navHeader :: navbar"></nav>
+
+<div class="container">
+    <div class="table-title">
+        <h2 class="title is-2">Rentals</h2>
+        <a class="button is-link" th:href="@{/vehiclerentaltracker/add}">Add rental</a>
+    </div>
+
+    <p th:if="${#lists.isEmpty(rentals)}">No rentals yet.</p>
+
+    <table class="tableStyles" th:unless="${#lists.isEmpty(rentals)}">
+        <thead>
+        <tr>
+            <th>Sale ID</th>
+            <th>Date</th>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Address</th>
+            <th>Vehicle</th>
+            <th>Colour</th>
+            <th>Days</th>
+            <th>Total</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="rental : ${rentals}">
+            <td th:text="${rental.saleID}"></td>
+            <td th:text="${rental.rentDate}"></td>
+            <td th:text="${rental.custFName}"></td>
+            <td th:text="${rental.custLName}"></td>
+            <td th:text="${rental.custAddress}"></td>
+            <td th:text="${rental.vehicleType}"></td>
+            <td th:text="${rental.vehicleColour}"></td>
+            <td th:text="${rental.rentalTimeDays}"></td>
+            <td th:text="${#numbers.formatDecimal(rental.saleTotal, 1, 2)}"></td>
+            <td>
+                <a class="button is-small is-light" th:href="@{/vehiclerentaltracker/edit(id=${rental.saleID})}">Edit</a>
+                <form th:action="@{/vehiclerentaltracker/delete}" method="post" style="display: inline;">
+                    <input type="hidden" name="id" th:value="${rental.saleID}">
+                    <input class="button is-small is-link" type="submit" value="Delete"
+                           onclick="return confirm('Delete this rental?');">
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<footer th:replace="fragments/footer :: footer"></footer>
+</body>
 </html>

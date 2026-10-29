@@ -2,72 +2,76 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head th:include="fragments/head :: headerFragment">
     <title id="pageTitle">Vehicle Rental Tracker</title>
-    <!--        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>-->
 </head>
 <body>
 <nav th:replace="fragments/navHeader :: navbar"></nav>
 
-<!--        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>-->
-<div style="width:600px; height:350px;">
-    <canvas id="assessmentChart"></canvas>
+<h2>Rentals Overview</h2>
+
+<!--/*@thymesVar id="rentals" type=""*/-->
+<p th:if="${#lists.isEmpty(rentals)}">No rentals to display.</p>
+
+<div style="width:800px; height:400px;">
+    <canvas id="rentalChart"></canvas>
 </div>
 
+<!-- Remove this line if your fragments/head already loads Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script th:inline="javascript">
-    const assessmentData = [[$,{assessments}]]; //Note possible syntax warning issue but functions correctly.
-    console.log('Assessment Data:', assessmentData);
+    /*<![CDATA[*/
+    const rentals = /*[[${rentals}]]*/ [];
+    /*]]>*/
+    console.log('Rental Data:', rentals);
 
-    const athleteNames = assessmentData.map(item => item.athleteName);
+    // One bar group per rental, labelled with the customer's name and the rental date
+    const labels = rentals.map(item => item.custFName + ' ' + item.custLName + ' (' + item.rentDate + ')');
+    const rentalDays = rentals.map(item => item.rentalTimeDays);
+    const saleTotals = rentals.map(item => item.saleTotal);
 
-    //const forehandDrives = [1,2,3];
-    const forehandDrives = assessmentData.map(item => item.forehandDrives);
-    const technicalScores = assessmentData.map(item => item.technicalScore);
-
-    const ctx = document.getElementById('assessmentChart');
+    const ctx = document.getElementById('rentalChart');
 
     new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: athleteNames,
-            datasets: [{
-                label: 'FH Drives',
-                data: forehandDrives,
-                borderWidth: 1,
-                // --- ADD TRENDLINE CONFIG HERE ---
-                trendlineLinear: {
-                    style: 'rgba(255, 99, 132, .8)',
-                    lineStyle: 'solid', // "solid", "dashed"
-                    width: 3
-                }
-            },
+            labels: labels,
+            datasets: [
                 {
-                    label: 'Technical Score',
-                    data: technicalScores,
+                    label: 'Rental Days',
+                    data: rentalDays,
                     borderWidth: 1,
-                    // --- ADD TRENDLINE CONFIG HERE ---
-                    trendlineLinear: {
-                        style: 'rgba(255, 99, 132, .8)',
-                        lineStyle: 'solid', // "solid", "dashed"
-                        width: 3
-                    }
+                    yAxisID: 'yDays'
+                },
+                {
+                    label: 'Sale Total ($)',
+                    data: saleTotals,
+                    borderWidth: 1,
+                    yAxisID: 'yTotal'
                 }
-
-
             ]
         },
         options: {
             scales: {
-                y: {
-                    beginAtZero: true
+                
+                yDays: {
+                    type: 'linear',
+                    position: 'left',
+                    beginAtZero: true,
+                    title: { display: true, text: 'Days' }
+                },
+                yTotal: {
+                    type: 'linear',
+                    position: 'right',
+                    beginAtZero: true,
+                    title: { display: true, text: 'Sale Total ($)' },
+                    grid: { drawOnChartArea: false }
                 }
             }
         }
-    })
-    ;
+    });
 </script>
 
-
 <footer th:replace="fragments/footer :: footer"></footer>
-
 
 </body>
 </html>

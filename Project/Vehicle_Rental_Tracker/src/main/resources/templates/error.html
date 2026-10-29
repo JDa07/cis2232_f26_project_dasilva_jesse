@@ -1,13 +1,23 @@
-<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-    <head th:include="fragments/head :: headerFragment">
-        <title id="pageTitle">From head.html</title>
-    </head>
-    <body>
-    <nav th:replace="fragments/navHeader :: navbar"></nav>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/head :: headerFragment">
+    <title id="pageTitle">Error - Vehicle Rental Tracker</title>
+</head>
+<body>
+<nav th:replace="fragments/navHeader :: navbar"></nav>
 
-    <div class="container">
-        <h2 class="title is-2"><span th:text=#{label.error}></span></h2>
-    </div>
-    <footer th:replace="fragments/footer :: footer"></footer>
-    </body>
+<div class="container">
+    <h2 class="title is-2"><span th:text="#{label.error}">Error</span></h2>
+
+    <p th:if="${status}">
+        <span th:text="${status}">500</span> -
+        <span th:text="${error}">Internal Server Error</span>
+    </p>
+    <p th:if="${path}">Requested page: <span th:text="${path}">/report</span></p>
+
+    <a class="button is-link" th:href="@{/}">Back to home</a>
+</div>
+
+<footer th:replace="fragments/footer :: footer"></footer>
+</body>
 </html>

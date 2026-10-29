@@ -18,92 +18,82 @@ import java.util.ResourceBundle;
 
 public class VehicleRentalTrackerDAO {
 
-    private static ResultSet rs;
-    private static Connection conn = null;
     private static final Logger logger = LoggerFactory.getLogger(VehicleRentalTrackerDAO.class);
+
+    private final String connectionString;
+    private final String username;
+    private final String password;
 
     public VehicleRentalTrackerDAO() {
 
         String propFileName = "application";
         ResourceBundle rb = ResourceBundle.getBundle(propFileName);
-        String connectionString = rb.getString("spring.datasource.url");
-        String userName = rb.getString("spring.datasource.username");
-        String password = rb.getString("spring.datasource.password");
-
-        try {
-            conn = DriverManager.getConnection(connectionString, userName, password);
-        } catch (SQLException e) {
-            logger.error(e.toString());
-        }
+        this.connectionString = rb.getString("spring.datasource.url");
+        this.username = rb.getString("spring.datasource.username");
+        this.password = rb.getString("spring.datasource.password");
     }
 
-    public ArrayList<VehicleRentalTrackerData> selectAll() {
-        ArrayList<VehicleRentalTrackerData> rentals = null;
-        Statement stmt = null;
-
-        try {
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery("select * from vehiclerentaltrackerdata;");
-
-            rentals = new ArrayList();
-
-            while (rs.next()) {
-
-                VehicleRentalTrackerData rental = new VehicleRentalTrackerData();
-
-                rental.setSaleID(rs.getInt("id"));
-                rental.setRentDate(rs.getString("rentDate"));
-                rental.setCustFName(rs.getString("custFName"));
-                rental.setCustLName(rs.getString("custLName"));
-                rental.setVehicleType(rs.getString("vehicleType"));
-                rental.setVehicleColour(rs.getString("vehicleColour"));
-                rental.setRentalTimeDays(rs.getInt("rentalTimeDays"));
-                rental.setSaleTotal(rs.getDouble("saleTotal"));
-
-                rentals.add(rental);
-
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try{
-                stmt.close();
-
-            } catch (SQLException ex) {
-                System.out.println("There was an error closing");
-            }
-        } return rentals;
+    //Open new database connection
+    private Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(connectionString, username, password);
     }
 
     /**
-     * Select all by customer name
+     * Select all rentals
      *
+     * @return list of all rentals
+     */
+
+
+    public ArrayList<VehicleRentalTrackerData> selectAll() {
+        ArrayList<VehicleRentalTrackerData> rentals = new ArrayList<>();
+        String sql = "SELECT * FROM vehiclerentaltrackerdata";
+
+        try (Connection conn = getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            rentals = loadList(rs);
+        } catch (SQLException e) {
+            logger.error("Error selecting all rentals", e);
+        }
+        return rentals;
+    }
+
+    /**
+     * Select all by customer first name and last name
+     *
+     * @param firstName customer first name
+     * @param lastName  customer last name
+     * @return list of matching rentals
      * @author Jesse Da Silva
      * @since 15/10/2026
      */
 
-    public ArrayList<VehicleRentalTrackerData> selectAllByCustomerName(String customerName) {
-        ArrayList<VehicleRentalTrackerData> rentals = null;
-        Statement stmt = null;
+    public ArrayList<VehicleRentalTrackerData> selectAllByCustomerName(String firstName, String lastName) {
+        ArrayList<VehicleRentalTrackerData> rentals = new ArrayList<>();
+        String sql = "SELECT * FROM vehiclerentaltrackerdata WHERE custFName = ? AND custLName = ?";
 
-        try{
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, firstName);
+            ps.setString(2, lastName);
 
-            stmt = conn.createStatement();
-            String sqlStatement = "select & from vehiclerentaltrackerdata " + "where customerName = " + customerName; // figure out where/how to get full name
-            rs = stmt.executeQuery(sqlStatement);
-
-            rentals = loadList(rs);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-
-            try{
-                stmt.close();
-            } catch (SQLException ex) {
-                System.out.println("There was an error closing");
-            }
-        } return rentals;
+            try (ResultSet rs = ps.executeQuery()) {
+                rentals = loadList(rs);
+        }
+    } catch(SQLException e) {
+        logger.error("Error selecting rentals by customer name", e);
     }
+    return rentals;
+}
+
+    /**
+     * Convert each row of result set into a VehicleRentalTrackerData object
+     * @param rs result set
+     * @return list of rentals
+     * @throws SQLException
+     */
 
     public ArrayList<VehicleRentalTrackerData> loadList(ResultSet rs) throws SQLException {
         ArrayList<VehicleRentalTrackerData> rentals = new ArrayList();
@@ -111,16 +101,18 @@ public class VehicleRentalTrackerDAO {
         while (rs.next()) {
             VehicleRentalTrackerData rental = new VehicleRentalTrackerData();
 
-            rental.setSaleID(rs.getInt("id"));
+            rental.setSaleID(rs.getInt("saleID"));
             rental.setRentDate(rs.getString("rentDate"));
             rental.setCustFName(rs.getString("custFName"));
             rental.setCustLName(rs.getString("custLName"));
+            rental.setCustAddress(rs.getString("custAddress"));
             rental.setVehicleType(rs.getString("vehicleType"));
             rental.setVehicleColour(rs.getString("vehicleColour"));
             rental.setRentalTimeDays(rs.getInt("rentalTimeDays"));
             rental.setSaleTotal(rs.getDouble("saleTotal"));
 
             rentals.add(rental);
-        } return rentals;
+        }
+        return rentals;
     }
 }

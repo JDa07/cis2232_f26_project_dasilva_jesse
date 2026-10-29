@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/head :: headerFragment">
+    <title id="pageTitle">Rentals by Customer Name</title>
+</head>
+<body>
+<!--/*@thymesVar id="reportInput" type="ca.hccis.tracker.entity.ReportTracker"*/-->
+<nav th:replace="fragments/navHeader :: navbar"></nav>
+
+<div class="container">
+    <h2 class="title is-2">Rentals by Customer Name</h2>
+
+    <form th:action="@{/report/tracker/name/submit}" th:object="${reportInput}" method="post">
+        <div class="field is-grouped">
+            <div class="control">
+                <input class="input" type="text" th:field="*{fName}" placeholder="First name" aria-label="First name" required>
+            </div>
+            <div class="control">
+                <input class="input" type="text" th:field="*{lName}" placeholder="Last name" aria-label="Last name" required>
+            </div>
+            <div class="control">
+                <input class="button is-link" type="submit" value="Run report">
+            </div>
+        </div>
+    </form>
+
+    <p class="error" th:if="${message}" th:text="${message}"></p>
+
+    <table class="tableStyles" style="margin-top: 1.5rem;"
+           th:if="${reportInput.vehicleRentalTrackerData != null and !reportInput.vehicleRentalTrackerData.isEmpty()}">
+        <thead>
+        <tr>
+            <th>Sale ID</th>
+            <th>Date</th>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Address</th>
+            <th>Vehicle</th>
+            <th>Colour</th>
+            <th>Days</th>
+            <th>Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="rental : ${reportInput.vehicleRentalTrackerData}">
+            <td th:text="${rental.saleID}"></td>
+            <td th:text="${rental.rentDate}"></td>
+            <td th:text="${rental.custFName}"></td>
+            <td th:text="${rental.custLName}"></td>
+            <td th:text="${rental.custAddress}"></td>
+            <td th:text="${rental.vehicleType}"></td>
+            <td th:text="${rental.vehicleColour}"></td>
+            <td th:text="${rental.rentalTimeDays}"></td>
+            <td th:text="${#numbers.formatDecimal(rental.saleTotal, 1, 2)}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<footer th:replace="fragments/footer :: footer"></footer>
+</body>
+</html>
