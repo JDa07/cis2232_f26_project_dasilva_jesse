@@ -65,3 +65,17 @@ The calculation goes as followed:
 
 > saleTotal = (costOfVehicle * rentalTimeDay) * TAX_RATE
 
+## Reports
+
+Reports are available from the **Reports** menu in the navigation bar, or at `/report`.
+
+### Rentals by Customer Name
+**URL:** `/report/tracker/name`
+
+Shows every rental made by a customer.
+
+- **Input:** customer first name and last name
+- **Output:** a table with sale ID, rental date, customer name, address, vehicle type, vehicle colour, rental length in days and sale total
+- **No matches:** a message says no records were found under that name
+- **File output:** each time the report runs, the results are also written to a file named `customerNameReport`
+- **How it works:** `ReportController` takes the form input and calls `VehicleRentalTrackerBO`, which asks `VehicleRentalTrackerDAO` for the matching rows. The DAO uses a prepared statement on the `custFName` and `custLName` columns.

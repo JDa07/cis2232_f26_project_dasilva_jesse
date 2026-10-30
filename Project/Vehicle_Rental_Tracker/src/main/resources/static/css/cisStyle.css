@@ -29,5 +29,5 @@
 }
 
 .icon i:hover {
-    color: #007bff;
+    color: var(--main-color-primary, #b6042a);
 }

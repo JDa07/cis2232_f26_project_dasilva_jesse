@@ -1,4 +1,4 @@
-package ca.hccis.squash.exception;
+package ca.hccis.tracker.exception;
 
 /**
  * Used if all attributes not provided or issues with some attributes.  
