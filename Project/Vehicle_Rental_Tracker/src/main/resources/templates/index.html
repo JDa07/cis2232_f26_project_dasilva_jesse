@@ -4,34 +4,32 @@
     <title id="pageTitle">Vehicle Rental Tracker</title>
 </head>
 <body>
+<!--/*@thymesVar id="rentals" type="java.util.List<ca.hccis.tracker.entity.VehicleRentalTrackerData>"*/-->
 <nav th:replace="fragments/navHeader :: navbar"></nav>
 
-<h2>Rentals Overview</h2>
+<div class="container">
+    <h2 class="title is-2">Rentals Overview</h2>
 
-<!--/*@thymesVar id="rentals" type=""*/-->
-<p th:if="${#lists.isEmpty(rentals)}">No rentals to display.</p>
+    <p th:if="${#lists.isEmpty(rentals)}">No rentals to display.</p>
 
-<div style="width:800px; height:400px;">
-    <canvas id="rentalChart"></canvas>
+    <div style="width:800px; max-width:100%; height:400px;">
+        <canvas id="rentalChart"></canvas>
+    </div>
 </div>
-
-<!-- Remove this line if your fragments/head already loads Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script th:inline="javascript">
     /*<![CDATA[*/
-    const rentals = /*[[${rentals}]]*/ [];
+    const rentalData = /*[[${rentals}]]*/ [];
+    const rentals = rentalData || [];   // an empty list if the controller sent nothing
     /*]]>*/
-    console.log('Rental Data:', rentals);
 
     // One bar group per rental, labelled with the customer's name and the rental date
     const labels = rentals.map(item => item.custFName + ' ' + item.custLName + ' (' + item.rentDate + ')');
     const rentalDays = rentals.map(item => item.rentalTimeDays);
     const saleTotals = rentals.map(item => item.saleTotal);
 
-    const ctx = document.getElementById('rentalChart');
-
-    new Chart(ctx, {
+    // Chart.js is already loaded by fragments/head
+    new Chart(document.getElementById('rentalChart'), {
         type: 'bar',
         data: {
             labels: labels,
@@ -39,20 +37,21 @@
                 {
                     label: 'Rental Days',
                     data: rentalDays,
-                    borderWidth: 1,
+                    backgroundColor: '#b6042a',
                     yAxisID: 'yDays'
                 },
                 {
                     label: 'Sale Total ($)',
                     data: saleTotals,
-                    borderWidth: 1,
+                    backgroundColor: '#7d0420',
                     yAxisID: 'yTotal'
                 }
             ]
         },
         options: {
+            maintainAspectRatio: false,
             scales: {
-                
+                // days and dollars are on very different scales, so each gets its own axis
                 yDays: {
                     type: 'linear',
                     position: 'left',
