@@ -1,14 +1,15 @@
 package ca.hccis.tracker.entity;
-import com.google.gson.Gson;
+
 import ca.hccis.tracker.util.CisUtility;
+import com.google.gson.Gson;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.text.NumberFormat;
 
 /**
- *  Vehicle rental order application.
+ * Vehicle rental order application.
  *
  * @author Jesse Da Silva
  * @since 22-09-2026
@@ -30,10 +31,10 @@ public class VehicleRentalOrder {
 
     public static final String VEHICLE_MENU =
             "a) Car" + System.lineSeparator()
-            + "b) Van" + System.lineSeparator()
-            + "c) Truck" + System.lineSeparator()
-            + "d) Electric" + System.lineSeparator()
-            + "x) EXIT" + System.lineSeparator();
+                    + "b) Van" + System.lineSeparator()
+                    + "c) Truck" + System.lineSeparator()
+                    + "d) Electric" + System.lineSeparator()
+                    + "x) EXIT" + System.lineSeparator();
 
     public static final String EXIT = "x";
 
@@ -43,30 +44,49 @@ public class VehicleRentalOrder {
     public static final int ELECTRIC_PRICE = 45;
     public static final double TAX_RATE = 1.15;
 
+    // Shared by both threads. AtomicInteger is thread-safe, so no two orders get the same ID.
     public static final AtomicInteger COUNTER = new AtomicInteger(1000);
 
-/*
-* Need to add validation to user input
- */
     /**
-     *  Gets rental information from the user.
+     * Gets rental information from the user, using the console or JOptionPane
+     * depending on how the CisUtility was created.
      *
+     * @param cisUtility input/output helper for the calling thread
+     * @return true if the order was entered, false if the user cancelled
      * @author Jesse Da Silva
      * @since 24-09-2026
      */
-    public boolean getInformation(){
+    public boolean getInformation(CisUtility cisUtility) {
 
-        custFName = CisUtility.getInputString("First name: ");
-        custLName = CisUtility.getInputString("Last Name: ");
-        rentDate = CisUtility.getInputString("Date (yyyy-mm-dd): ");
-        custAddress = CisUtility.getInputString("Address: ");
-        /*vehicleType = CisUtility.getInputString("Enter vehicle type: ");*/
+        // A null value means the user cancelled a JOptionPane dialog
+        custFName = cisUtility.getInputString("First name: ");
+        if (custFName == null) {
+            return cancel(cisUtility);
+        }
+
+        custLName = cisUtility.getInputString("Last Name: ");
+        if (custLName == null) {
+            return cancel(cisUtility);
+        }
+
+        rentDate = cisUtility.getInputString("Date (yyyy-mm-dd): ");
+        if (rentDate == null) {
+            return cancel(cisUtility);
+        }
+
+        custAddress = cisUtility.getInputString("Address: ");
+        if (custAddress == null) {
+            return cancel(cisUtility);
+        }
+
         boolean validChoice = false;
         do {
-            String choice = CisUtility.getInputString("Choose Vehicle Type: \n"
-                    + VEHICLE_MENU.trim().toLowerCase());
+            String choice = cisUtility.getInputString("Choose Vehicle Type: " + System.lineSeparator() + VEHICLE_MENU);
+            if (choice == null) {
+                return cancel(cisUtility);
+            }
 
-            switch (choice){
+            switch (choice.trim().toLowerCase()) {
                 case "a":
                     vehicleType = "Car";
                     vehicleCost = CAR_PRICE;
@@ -92,21 +112,31 @@ public class VehicleRentalOrder {
                     break;
 
                 case EXIT:
-                    System.out.println("Order Cancelled, goodbye");
-                    return false;
+                    return cancel(cisUtility);
 
-                default: System.out.println("ERROR please enter valid input");
+                default:
+                    cisUtility.display("ERROR please enter valid input");
             }
 
         } while (!validChoice);
-        vehicleColour = CisUtility.getInputString("Enter vehicle colour: ");
-        rentalTimeDays = CisUtility.getInputInt("Enter amount of days vehicle will be rented for: ");
+
+        vehicleColour = cisUtility.getInputString("Enter vehicle colour: ");
+        if (vehicleColour == null) {
+            return cancel(cisUtility);
+        }
+
+        rentalTimeDays = cisUtility.getInputInt("Enter amount of days vehicle will be rented for: ");
         calculateTotal();
         return true;
     }
 
+    private boolean cancel(CisUtility cisUtility) {
+        cisUtility.display("Order cancelled");
+        return false;
+    }
+
     /**
-     *  Method to validate if user input has blank fields. Will not save to JSON file if so.
+     * Method to validate if user input has blank fields. Will not save to JSON file if so.
      *
      * @author Jesse Da Silva
      * @since 24-09-2026
@@ -118,7 +148,7 @@ public class VehicleRentalOrder {
                 && vehicleCost > 0 && rentalTimeDays > 0;
     }
 
-    private static boolean notBlank(String s){
+    private static boolean notBlank(String s) {
         return s != null && !s.isBlank();
     }
 
@@ -129,23 +159,23 @@ public class VehicleRentalOrder {
      * @since 24-09-2026
      */
 
-    public String calculateTotal(){
+    public String calculateTotal() {
         NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.CANADA);
         BigDecimal total = BigDecimal.valueOf(vehicleCost)
                 .multiply(BigDecimal.valueOf(rentalTimeDays))
                 .multiply(BigDecimal.valueOf(TAX_RATE));
 
-        saleTotal =formatter.format(total);
+        saleTotal = formatter.format(total);
         return saleTotal;
     }
 
-    //Constructor for saleID//
-    public VehicleRentalOrder(){
-        this.saleID = generateID();
+    // No constructor body: the sale ID is assigned when the order is saved.
+    // (Generating it here would also burn an ID every time Gson loads an order from the file.)
+    public VehicleRentalOrder() {
     }
 
     //Method to generate an order ID//
-    public static int generateID(){
+    public static int generateID() {
         return COUNTER.incrementAndGet();
     }
 
@@ -157,17 +187,16 @@ public class VehicleRentalOrder {
      */
     public String toJson() {
         Gson gson = new Gson();
-        String json = gson.toJson(this);
-        return json;
+        return gson.toJson(this);
     }
 
     //Format and display information to user
-    public String toString(){
+    public String toString() {
         return "> ORDER SUMMARY <" +
                 "\nSale ID: " + saleID +
                 "\nDate of Order Placed: " + rentDate +
-                "\n---------------------"+
-                "\nName: " + custFName +" "+ custLName +
+                "\n---------------------" +
+                "\nName: " + custFName + " " + custLName +
                 "\nAddress: " + custAddress +
                 "\nVehicle Type: " + vehicleType +
                 "\nVehicle Colour: " + vehicleColour +
