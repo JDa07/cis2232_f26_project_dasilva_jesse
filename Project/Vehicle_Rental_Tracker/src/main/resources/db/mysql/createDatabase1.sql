@@ -1,10 +1,7 @@
-#For localhost
-DROP
-DATABASE IF EXISTS vehicle_rental_tracker;
-CREATE
-DATABASE vehicle_rental_tracker;
-use
-vehicle_rental_tracker;
+-- For localhost
+DROP DATABASE IF EXISTS cis2232_vehicle_rental_tracker;
+CREATE DATABASE cis2232_vehicle_rental_tracker;
+use cis2232_vehicle_rental_tracker;
 
 -- ------------------------------------------------------------------------------
 -- Note the table below to hold data associated with your project.  Expect one
