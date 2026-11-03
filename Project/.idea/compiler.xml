@@ -6,16 +6,15 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+<<<<<<<< HEAD:Assignments/.idea/compiler.xml
+        <module name="cis1232_A1_DaSilva_Jesse" />
+========
         <module name="test_client_which_calls_rest (1)" />
         <module name="vehicle_rental_tracker" />
         <module name="test_client_which_calls_rest" />
         <module name="test_console_app_that_calls_soap2" />
+>>>>>>>> 17d1037e3714ee6a6aa3c8412771f88e1f6cea96:Project/.idea/compiler.xml
       </profile>
     </annotationProcessing>
-  </component>
-  <component name="JavacSettings">
-    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="vehicle_rental_tracker" options="-parameters" />
-    </option>
   </component>
 </project>
