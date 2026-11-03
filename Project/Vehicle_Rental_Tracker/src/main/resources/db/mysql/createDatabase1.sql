@@ -1,5 +1,4 @@
-#For
-localhost
+#For localhost
 DROP
 DATABASE IF EXISTS vehicle_rental_tracker;
 CREATE
