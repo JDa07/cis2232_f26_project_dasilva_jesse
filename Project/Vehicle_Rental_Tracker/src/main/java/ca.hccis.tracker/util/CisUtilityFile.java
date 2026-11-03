@@ -1,44 +1,50 @@
 package ca.hccis.tracker.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
+import java.nio.file.StandardOpenOption;
+import java.util.List;
 
 public class CisUtilityFile {
 
+    private static final Logger logger = LoggerFactory.getLogger(CisUtilityFile.class);
+
     public static final String FOLDER_NAME = "c:\\CIS2232\\";
 
-    public static void writeReportToFile(String fileName, ArrayList theObjects) {
+    /**
+     * Write each object to a new time-stamped report file.
+     * Creates the folder if it doesn't exist.
+     *
+     * @param fileName   start of the report file name
+     * @param theObjects objects to write, one per line
+     */
+    public static void writeReportToFile(String fileName, List<?> theObjects) {
 
-        String fullName = FOLDER_NAME + fileName + CisUtility.getCurrentDate("_yyyyMMddhhmmss") + ".txt";
-        Path path = Paths.get(FOLDER_NAME);
-        try {
-            Files.createDirectories(path);
-        } catch (IOException e) {
-            System.out.println("BJM-CisUtilityFile-Error creating directories");
+        if (theObjects == null) {
+            return;
         }
 
-        BufferedWriter writer = null;
-        try {
-            writer = new BufferedWriter(new FileWriter(fullName, true));
+        Path folder = Paths.get(FOLDER_NAME);
+        Path file = folder.resolve(fileName + CisUtility.getCurrentDate("_yyyyMMddHHmmss") + ".txt");
 
-            for (Object current : theObjects) {
-                writer.write(current.toString());
-                writer.newLine();
+        try {
+            Files.createDirectories(folder); // does nothing if the folder already exists
+
+            try (BufferedWriter writer = Files.newBufferedWriter(file,
+                    StandardOpenOption.CREATE, StandardOpenOption.APPEND)) {
+                for (Object current : theObjects) {
+                    writer.write(current.toString());
+                    writer.newLine();
+                }
             }
         } catch (IOException e) {
-            System.out.println("CisUtilityFile exception with file: " + fullName);
-        } finally {
-            try {
-                writer.close();
-            } catch (IOException e) {
-                System.out.println("CisUtilityFile exception with file: " + fullName);
-            }
+            logger.error("Could not write report to {}", file, e);
         }
-
     }
 }
