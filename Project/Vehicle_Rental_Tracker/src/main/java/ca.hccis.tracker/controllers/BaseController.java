@@ -30,7 +30,7 @@ public class BaseController {
 
     /**
      *
-     * Drop-down of vehicle types on add form
+     * Drop-down of vehicle types on add/edit form
      */
     @ModelAttribute("vehicleTypes")
     public List<String> vehicleTypes() {
@@ -63,5 +63,49 @@ public class BaseController {
     public String add(Model model){
         model.addAttribute("rental",  new VehicleRentalTrackerData());
         return "vehiclerentaltracker/add";
+
+    }
+
+    /**
+     * Show form filled in with an existing rental
+     */
+    @RequestMapping("/vehiclerentaltrackerdata/edit")
+    public String edit(Model model, @RequestParam("id") int id){
+        Optional<VehicleRentalTrackerData> rental = repository.findById(id);
+
+        if (rental.isEmpty()){
+            logger.info("Rental {} not found", id);
+            return "redirect:/vehiclerentaltracker";
+        }
+
+        model.addAttribute("rental",  rental.get());
+        return "vehiclerentaltracker/add";
+    }
+
+    /**
+     * Save a new or edited rental
+     */
+    @PostMapping("/vehiclerentaltracker/submit")
+    public String submit(@Valid @ModelAttribute("rental") VehicleRentalTrackerData rental, BindingResult result){
+
+        if (result.hasErrors()){
+            return "vehiclerentaltracker/add";
+        }
+
+        VehicleRentalTrackerBO.calculateSaleTotal(rental);
+        repository.save(rental);
+        logger.info("Saved rental {}", rental.getSaleID());
+
+        return "redirect:/vehiclerentaltracker";
+    }
+
+    /**
+     * Delete a rental
+     */
+    @PostMapping("/vehiclerentaltracker/delete")
+    public String delete(@RequestParam("id") Integer id) {
+        repository.deleteById(id);
+        logger.info("Deleted rental {}", id);
+        return "redirect:/vehiclerentaltracker";
     }
 }

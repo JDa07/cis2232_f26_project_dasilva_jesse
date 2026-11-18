@@ -1,7 +1,10 @@
 package ca.hccis.tracker.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 import java.util.ArrayList;
@@ -24,36 +27,39 @@ public class VehicleRentalTrackerData {
     @Column(name = "saleID", nullable = false)
     private Integer saleID;
 
-    @Size(min = 1, max = 10)
-    @NotNull
+    @NotBlank(message = "Rental date is required")
+    @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}", message = "Date must be in yyyy-MM-dd format")
+    @Size(min = 10, max = 10)
     @Column(name = "rentDate", nullable = false, length = 10)
     private String rentDate;
 
+    @NotBlank(message = "First name is required")
     @Size(min = 1, max = 50)
-    @NotNull
     @Column(name = "custFName", nullable = false, length = 50)
     private String custFName;
 
+    @NotBlank(message = "Last name is required")
     @Size(min = 1, max = 50)
-    @NotNull
     @Column(name = "custLName", nullable = false, length = 50)
     private String custLName;
 
+    @NotBlank (message = "Address is required")
     @Size(min = 1, max = 50)
-    @NotNull
     @Column(name = "custAddress", nullable = false, length = 50)
     private String custAddress;
 
+    @NotBlank(message = "Vehicle colour is required")
     @Size(min = 1, max = 50)
-    @NotNull
     @Column(name = "vehicleColour", nullable = false, length = 50)
     private String vehicleColour;
 
+    @NotBlank (message = "Vehicle type is required")
+    @Pattern(regexp = "Car|Truck|Electric|Van", message = "Choose a valid vehicle type")
     @Size(min = 1, max = 50)
-    @NotNull
     @Column(name = "vehicleType", nullable = false, length = 50)
     private String vehicleType;
 
+    @Min(value = 1, message = "Rental days must be a minimum of 1")
     @Column(name = "rentalTimeDays")
     private int rentalTimeDays;
 
